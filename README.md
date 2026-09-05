@@ -32,9 +32,9 @@ Das Projekt befindet sich aktuell in der Entwicklung.
 ### Aktueller Stand
 
 - [x] GitHub-Repository erstellt
-- [ ] Spring-Boot-Projekt einrichten
-- [ ] Erste Entity erstellen
-- [ ] Erste GET-Route erstellen
+- [x] Spring-Boot-Projekt einrichten
+- [x] Erste Entity erstellen
+- [x] Erste GET-Route erstellen
 - [ ] Beispieldaten über die REST-API ausgeben
 - [ ] Datenbank anbinden
 - [ ] Frontend und Backend verbinden
