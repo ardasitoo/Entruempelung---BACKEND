@@ -37,4 +37,40 @@ Das Projekt befindet sich aktuell in der Entwicklung.
 - [x] Erste GET-Route erstellen
 - [x] Beispieldaten über die REST-API ausgeben
 - [ ] Datenbank anbinden
-- [ ] Frontend und Backend verbinden
+- [x] Frontend und Backend verbinden
+
+## REST API
+
+```text
+GET /api/customer-requests
+```
+
+Diese Route gibt eine Liste von Beispiel-Kundenanfragen zurueck.
+
+## Render Deployment
+
+Service-Typ:
+
+```text
+Web Service
+```
+
+Build Command:
+
+```bash
+mvn clean package -DskipTests
+```
+
+Start Command:
+
+```bash
+java -jar target/entruempelung-backend-0.0.1-SNAPSHOT.jar
+```
+
+Environment Variable fuer CORS:
+
+```text
+APP_CORS_ALLOWED_ORIGINS=https://dein-frontend.onrender.com
+```
+
+Lokal ist standardmaessig `http://localhost:5173` erlaubt.

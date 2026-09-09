@@ -2,7 +2,6 @@ package de.ardasitoo.entruempelung.customerrequest;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/customer-requests")
-@CrossOrigin(origins = "http://localhost:5173")
 public class CustomerRequestController {
 
     private final CustomerRequestRepository customerRequestRepository;
