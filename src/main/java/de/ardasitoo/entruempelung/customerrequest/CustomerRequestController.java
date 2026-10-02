@@ -16,9 +16,14 @@ import java.util.List;
 public class CustomerRequestController {
 
     private final CustomerRequestRepository customerRequestRepository;
+    private final CustomerRequestNotificationService notificationService;
 
-    public CustomerRequestController(CustomerRequestRepository customerRequestRepository) {
+    public CustomerRequestController(
+            CustomerRequestRepository customerRequestRepository,
+            CustomerRequestNotificationService notificationService
+    ) {
         this.customerRequestRepository = customerRequestRepository;
+        this.notificationService = notificationService;
     }
 
     @GetMapping
@@ -31,6 +36,8 @@ public class CustomerRequestController {
     public CustomerRequest create(@Valid @RequestBody CustomerRequest customerRequest) {
         customerRequest.setId(null);
         customerRequest.setStatus(CustomerRequestStatus.NEW);
-        return customerRequestRepository.save(customerRequest);
+        CustomerRequest savedRequest = customerRequestRepository.save(customerRequest);
+        notificationService.notifyAbout(savedRequest);
+        return savedRequest;
     }
 }

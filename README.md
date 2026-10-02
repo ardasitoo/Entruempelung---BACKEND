@@ -74,3 +74,31 @@ APP_CORS_ALLOWED_ORIGINS=https://dein-frontend.onrender.com
 ```
 
 Lokal ist standardmaessig `http://localhost:5173` erlaubt.
+
+Admin-Zugang fuer geschuetzte Anfrage-Liste:
+
+```text
+ADMIN_USERNAME=dein-admin-name
+ADMIN_PASSWORD=dein-sicheres-passwort
+```
+
+Die Route `GET /api/customer-requests` ist geschuetzt und kann nur mit diesen
+Admin-Zugangsdaten aufgerufen werden. `POST /api/customer-requests` bleibt fuer
+das Kontaktformular oeffentlich erreichbar.
+
+Optionale E-Mail-Benachrichtigung:
+
+```text
+EMAIL_NOTIFICATIONS_ENABLED=true
+EMAIL_NOTIFICATIONS_TO=deine-email@example.com
+EMAIL_NOTIFICATIONS_FROM=noreply@deine-domain.de
+SPRING_MAIL_HOST=smtp.example.com
+SPRING_MAIL_PORT=587
+SPRING_MAIL_USERNAME=smtp-benutzer
+SPRING_MAIL_PASSWORD=smtp-passwort
+SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+```
+
+Wenn `EMAIL_NOTIFICATIONS_ENABLED=false` bleibt, werden Anfragen nur gespeichert
+und keine E-Mails versendet.
