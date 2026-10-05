@@ -62,6 +62,7 @@ public class CustomerRequestNotificationService {
                 E-Mail: %s
                 Telefon: %s
                 Adresse: %s
+                Postleitzahl: %s
                 Leistung: %s
                 Wunschtermin: %s
 
@@ -73,6 +74,7 @@ public class CustomerRequestNotificationService {
                 customerRequest.getEmail(),
                 valueOrFallback(customerRequest.getPhone()),
                 customerRequest.getAddress(),
+                customerRequest.getPostalCode(),
                 customerRequest.getServiceType(),
                 customerRequest.getPreferredDate() == null ? "Nicht angegeben" : customerRequest.getPreferredDate(),
                 valueOrFallback(customerRequest.getMessage())

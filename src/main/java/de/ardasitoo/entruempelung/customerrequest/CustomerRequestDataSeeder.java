@@ -26,7 +26,8 @@ public class CustomerRequestDataSeeder implements CommandLineRunner {
         basementClearance.setLastName("Mustermann");
         basementClearance.setEmail("max.mustermann@example.com");
         basementClearance.setPhone("+49 170 1234567");
-        basementClearance.setAddress("Musterstrasse 12, 12345 Berlin");
+        basementClearance.setAddress("Musterstrasse 12, Berlin");
+        basementClearance.setPostalCode("12345");
         basementClearance.setServiceType("Kellerentruempelung");
         basementClearance.setMessage("Der Keller soll komplett geleert und besenrein uebergeben werden.");
         basementClearance.setPreferredDate(LocalDate.now().plusDays(7));
@@ -37,7 +38,8 @@ public class CustomerRequestDataSeeder implements CommandLineRunner {
         apartmentClearance.setLastName("Demir");
         apartmentClearance.setEmail("aylin.demir@example.com");
         apartmentClearance.setPhone("+49 160 7654321");
-        apartmentClearance.setAddress("Hauptstrasse 48, 50667 Koeln");
+        apartmentClearance.setAddress("Hauptstrasse 48, Koeln");
+        apartmentClearance.setPostalCode("50667");
         apartmentClearance.setServiceType("Wohnungsaufloesung");
         apartmentClearance.setMessage("Eine Zwei-Zimmer-Wohnung soll nach einem Umzug entruempelt werden.");
         apartmentClearance.setPreferredDate(LocalDate.now().plusDays(14));
@@ -47,7 +49,8 @@ public class CustomerRequestDataSeeder implements CommandLineRunner {
         garageClearance.setFirstName("Jonas");
         garageClearance.setLastName("Schneider");
         garageClearance.setEmail("jonas.schneider@example.com");
-        garageClearance.setAddress("Industrieweg 5, 44135 Dortmund");
+        garageClearance.setAddress("Industrieweg 5, Dortmund");
+        garageClearance.setPostalCode("44135");
         garageClearance.setServiceType("Garagenentruempelung");
         garageClearance.setMessage("Alte Moebel, Kartons und Werkzeuge sollen fachgerecht entsorgt werden.");
         garageClearance.setPreferredDate(LocalDate.now().plusDays(21));

@@ -50,6 +50,11 @@ public class CustomerRequest {
     private String address;
 
     @NotBlank
+    @Size(max = 10)
+    @Column(nullable = false, length = 10)
+    private String postalCode;
+
+    @NotBlank
     @Size(max = 100)
     @Column(nullable = false, length = 100)
     private String serviceType;
@@ -113,6 +118,14 @@ public class CustomerRequest {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getServiceType() {
