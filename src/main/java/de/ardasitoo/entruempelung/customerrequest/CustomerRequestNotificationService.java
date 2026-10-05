@@ -32,12 +32,7 @@ public class CustomerRequestNotificationService {
 
     public void notifyAbout(CustomerRequest customerRequest) {
         if (!enabled) {
-            return;
-        }
-
-        JavaMailSender mailSender = mailSenderProvider.getIfAvailable();
-        if (mailSender == null || recipient.isBlank()) {
-            logger.warn("Email notification is enabled, but mail sender or recipient is missing.");
+            logger.info("Email notification is disabled. Customer request {} was saved without email.", customerRequest.getId());
             return;
         }
 
@@ -48,9 +43,46 @@ public class CustomerRequestNotificationService {
         message.setText(buildMessage(customerRequest));
 
         try {
-            mailSender.send(message);
+            send(message);
         } catch (RuntimeException exception) {
-            logger.warn("Could not send customer request notification email.", exception);
+            logger.warn("Customer request {} was saved, but email notification failed.", customerRequest.getId());
+        }
+    }
+
+    public void sendTestEmail() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(sender);
+        message.setTo(recipient);
+        message.setSubject("Test: Entruempelung Anfrage-Mail");
+        message.setText("""
+                Das ist eine Test-Mail vom Entruempelung-Backend.
+
+                Wenn diese Mail angekommen ist, funktioniert der SMTP-Versand ueber Render.
+                """);
+
+        send(message);
+    }
+
+    private void send(SimpleMailMessage message) {
+        if (!enabled) {
+            throw new IllegalStateException("Email notifications are disabled.");
+        }
+
+        JavaMailSender mailSender = mailSenderProvider.getIfAvailable();
+        if (mailSender == null) {
+            throw new IllegalStateException("JavaMailSender is not available. Check SPRING_MAIL_* variables.");
+        }
+
+        if (recipient.isBlank()) {
+            throw new IllegalStateException("Email recipient is missing. Check EMAIL_NOTIFICATIONS_TO.");
+        }
+
+        try {
+            mailSender.send(message);
+            logger.info("Email notification sent to {}.", recipient);
+        } catch (RuntimeException exception) {
+            logger.error("Could not send email notification to {}.", recipient, exception);
+            throw exception;
         }
     }
 
