@@ -86,19 +86,42 @@ Die Route `GET /api/customer-requests` ist geschuetzt und kann nur mit diesen
 Admin-Zugangsdaten aufgerufen werden. `POST /api/customer-requests` bleibt fuer
 das Kontaktformular oeffentlich erreichbar.
 
-Optionale E-Mail-Benachrichtigung:
+## E-Mail-Benachrichtigungen mit Resend
+
+Nach dem Speichern einer Kundenanfrage sendet das Backend die Benachrichtigung
+über HTTPS an `https://api.resend.com/emails`. Die Formularroute bleibt gleich.
+Antworten auf die Benachrichtigung gehen an die E-Mail-Adresse des Kunden.
+Ein Versandfehler verhindert nicht das Speichern; es gibt derzeit keine automatische Wiederholung.
+
+Im Render-Backend unter Environment setzen:
 
 ```text
 EMAIL_NOTIFICATIONS_ENABLED=true
-EMAIL_NOTIFICATIONS_TO=deine-email@example.com
-EMAIL_NOTIFICATIONS_FROM=noreply@deine-domain.de
-SPRING_MAIL_HOST=smtp.example.com
-SPRING_MAIL_PORT=587
-SPRING_MAIL_USERNAME=smtp-benutzer
-SPRING_MAIL_PASSWORD=smtp-passwort
-SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
-SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+RESEND_API_KEY=<geheimer Resend API-Key>
+EMAIL_NOTIFICATIONS_TO=<Empfängeradresse>
+EMAIL_NOTIFICATIONS_FROM=NEXRUM <anfragen@deine-verifizierte-domain.de>
 ```
 
-Wenn `EMAIL_NOTIFICATIONS_ENABLED=false` bleibt, werden Anfragen nur gespeichert
-und keine E-Mails versendet.
+Den API-Key nur als geheime Umgebungsvariable hinterlegen, niemals in GitHub
+oder im Frontend. Die bisherigen `SPRING_MAIL_*`-Variablen werden nicht mehr benötigt.
+Anschließend das Backend neu deployen.
+
+Für einen ersten Test ohne eigene Domain ist `NEXRUM <onboarding@resend.dev>`
+als Absender möglich. Der Empfänger muss dann die Adresse des Resend-Kontos sein.
+Für beliebige Empfänger eine eigene Domain in Resend verifizieren. Eine fremde
+Domain wie `web.de` oder `gmail.com` kann nicht als eigene Absenderdomain dienen.
+
+Geschützter Versandtest (curl fragt nach dem Admin-Passwort):
+
+```bash
+curl -i -X POST https://entruempelung-backend-1.onrender.com/api/admin/test-email -u DEIN_ADMIN
+```
+
+HTTP 204 bedeutet, dass Resend den Versand angenommen hat, nicht dass die Mail
+bereits zugestellt ist. Den Zustellstatus im Resend-Dashboard prüfen.
+Bei Fehlern Backend-Logs und Resend-Dashboard prüfen (API-Key, Absenderdomain,
+Testempfänger-Beschränkung). Keine Zugangsdaten oder Kundeninhalte werden geloggt.
+Wenn `EMAIL_NOTIFICATIONS_ENABLED=false` bleibt, werden Anfragen nur gespeichert.
+
+Dokumentation: https://resend.com/docs/api-reference/emails/send-email
+Testdomain: https://resend.com/docs/knowledge-base/403-error-resend-dev-domain
