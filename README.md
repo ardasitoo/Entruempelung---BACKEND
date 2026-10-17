@@ -125,3 +125,15 @@ Wenn `EMAIL_NOTIFICATIONS_ENABLED=false` bleibt, werden Anfragen nur gespeichert
 
 Dokumentation: https://resend.com/docs/api-reference/emails/send-email
 Testdomain: https://resend.com/docs/knowledge-base/403-error-resend-dev-domain
+
+## Auftragsstatus im Admin-Bereich
+
+`PATCH /api/customer-requests/{id}/status` ist nur mit Admin-Zugang erlaubt.
+Beispiel: `{"status":"CONTACTED"}`. Erlaubte Werte: `NEW`, `CONTACTED`,
+`OFFER_SENT`, `ACCEPTED`, `REJECTED`, `COMPLETED`. Andere Kundenfelder werden
+über diese Route nicht geändert. Ungültige Statuswerte liefern 400,
+unbekannte Anfragen 404 und fehlende/falsche Zugangsdaten 401.
+
+Die bestehende H2-Datenbank läuft im Arbeitsspeicher: Anfragen und Statusänderungen
+überstehen keinen Backend-Neustart. Für den dauerhaften Firmenbetrieb muss eine
+persistente Datenbank eingerichtet werden.

@@ -3,6 +3,9 @@ package de.ardasitoo.entruempelung.customerrequest;
 import de.ardasitoo.entruempelung.config.AdminAccessService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +47,17 @@ public class CustomerRequestController {
         }
 
         return customerRequestRepository.findAll();
+    }
+
+    public record StatusUpdate(@NotNull CustomerRequestStatus status) {}
+
+    @PatchMapping("/{id}/status")
+    public CustomerRequest updateStatus(@PathVariable Long id,
+                                        @Valid @RequestBody StatusUpdate update) {
+        CustomerRequest request = customerRequestRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found"));
+        request.setStatus(update.status());
+        return customerRequestRepository.save(request);
     }
 
     @PostMapping
