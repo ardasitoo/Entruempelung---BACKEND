@@ -1,12 +1,14 @@
 package de.ardasitoo.entruempelung.customerrequest;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Component
+@ConditionalOnProperty(name = "app.seed-demo-data", havingValue = "true", matchIfMissing = true)
 public class CustomerRequestDataSeeder implements CommandLineRunner {
 
     private final CustomerRequestRepository customerRequestRepository;
