@@ -1,6 +1,8 @@
 package de.ardasitoo.entruempelung.customerrequest;
 
 import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.ZoneOffset;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -71,6 +73,14 @@ public class CustomerRequest {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @JsonIgnore
+    private LocalDateTime rejectedAt;
+
+    @JsonIgnore
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean retentionProtected;
+
 
     public Long getId() {
         return id;
@@ -157,7 +167,19 @@ public class CustomerRequest {
     }
 
     public void setStatus(CustomerRequestStatus status) {
+        if (this.status == CustomerRequestStatus.ACCEPTED || this.status == CustomerRequestStatus.COMPLETED
+                || status == CustomerRequestStatus.ACCEPTED || status == CustomerRequestStatus.COMPLETED) {
+            retentionProtected = true;
+        }
+        if (status != this.status) {
+            rejectedAt = status == CustomerRequestStatus.REJECTED ? LocalDateTime.now(ZoneOffset.UTC) : null;
+        }
         this.status = status;
+    }
+
+    void resetRetention() {
+        rejectedAt = null;
+        retentionProtected = false;
     }
 
     public LocalDateTime getCreatedAt() {

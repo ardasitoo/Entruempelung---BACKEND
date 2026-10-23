@@ -181,3 +181,18 @@ Render bietet für bezahlte Datenbanken Wiederherstellungsfunktionen.
 
 Quellen: https://render.com/docs/postgresql-creating-connecting
 https://render.com/docs/free
+
+## Löschfrist für unverbindliche Anfragen
+
+Abgelehnte Anfragen werden sechs Kalendermonate nach dem dokumentierten Statuswechsel
+in REJECTED automatisch aus der Datenbank gelöscht. Die Prüfung startet eine Minute
+nach dem Backend-Start und läuft danach täglich. Wiederholtes Speichern desselben
+Status verlängert die Frist nicht. Wiederöffnung entfernt den Ablehnungszeitpunkt.
+Anfragen, die jemals ACCEPTED oder COMPLETED waren, sind dauerhaft von dieser
+Automatik ausgenommen. Alte Datensätze ohne Ablehnungsdatum werden nicht rückwirkend
+automatisch gelöscht und müssen manuell geprüft werden. Der nächste Wechsel von
+einem anderen Status nach REJECTED dokumentiert den Beginn einer neuen Frist.
+Die Löschung betrifft nur PostgreSQL. WEB.DE-Mails und Dienstleisterkopien müssen
+zusätzlich nach demselben Löschkonzept manuell behandelt werden. Keine automatischen
+Löschungen oder API-Zugriffe in fremden Postfächern. Logs enthalten nur Anzahlen.
+Vor der ersten Bereitstellung Datenbanksicherung prüfen.

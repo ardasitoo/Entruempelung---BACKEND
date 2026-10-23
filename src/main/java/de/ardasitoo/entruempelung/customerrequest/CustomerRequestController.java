@@ -65,6 +65,7 @@ public class CustomerRequestController {
     public CustomerRequest create(@Valid @RequestBody CustomerRequest customerRequest) {
         customerRequest.setId(null);
         customerRequest.setStatus(CustomerRequestStatus.NEW);
+        customerRequest.resetRetention();
         CustomerRequest savedRequest = customerRequestRepository.save(customerRequest);
         notificationService.notifyAbout(savedRequest);
         return savedRequest;
